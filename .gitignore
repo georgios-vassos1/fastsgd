@@ -1,0 +1,12 @@
+.Rhistory
+.ipynb_checkpoints/
+.ropeproject/
+.pytest_cache/
+
+sgd.egg-info/
+
+tests/__pycache__/
+
+sgd/__pycache__/
+sgd/.ropeproject/
+sgd/__pycache__/
