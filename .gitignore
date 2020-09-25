@@ -10,3 +10,4 @@ tests/__pycache__/
 sgd/__pycache__/
 sgd/.ropeproject/
 sgd/__pycache__/
+sgd/learning-rate/__pycache__/
