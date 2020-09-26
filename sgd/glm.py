@@ -25,7 +25,7 @@ class glm(model):
 
     def gradient(self, t: int, theta_old: np.ndarray, data: data_set) -> np.ndarray:
         datum = data.get_data_point(t)
-        return ((datum._y - self._transfer_instance.h(datum._x @ theta_old)) * datum._x).T - self.gradient_penalty(theta_old)
+        return ((datum._y - self._transfer_instance.h(datum._x @ theta_old)) * datum._x) - self.gradient_penalty(theta_old)
 
     def scale_factor(self, ksi: float, at: float, datum: data_point, theta_old: np.ndarray, normx: float):
         return datum._y - self._transfer_instance.h((theta_old @ datum._x) - at * (self.gradient_penalty(theta_old) @ datum._x) + ksi * normx)
