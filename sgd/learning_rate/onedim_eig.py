@@ -1,6 +1,6 @@
 import numpy as np
-from base import BaseLR
-from value import LRvalue
+from .base import BaseLR
+from .value import LRvalue
 
 class OnedimEigLR:
     def __init__(self):
