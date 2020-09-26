@@ -1,5 +1,5 @@
-from value import LRvalue
 import numpy as np
+from value import LRvalue
 
 class BaseLR:
     def __init__(self):
