@@ -1,8 +1,7 @@
 import numpy as np
-import math
+# import math
 
-sign = np.vectorize(lambda x: math.copysign(1, x))
-
+# sign = np.vectorize(lambda x: math.copysign(1, x))
 
 class DataLoader:
     def __init__(self, dbcon = None, data_path = None, data_uri = None):

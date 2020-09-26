@@ -10,7 +10,7 @@ class model:
         pass
 
     def gradient_penalty(self, theta: np.ndarray) -> np.ndarray:
-        return self._lambda1 * sign(theta) + self._lambda2 * theta
+        return self._lambda1 * np.sign(theta) + self._lambda2 * theta
 
     ## Functions for the implicit update
     ## ell'(x^T theta + at x^T grad(penalty) + ksi ||x||^2)
