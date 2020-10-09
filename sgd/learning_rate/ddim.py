@@ -25,8 +25,8 @@ class ddimLR(BaseLR):
         self.__v = LRvalue(1, d)
 
     def __call__(self, t: int, grad_t: np.ndarray) -> LRvalue:
-        self.__Idiag = np.sum(self.__a * self.__Idiag + self.__b * np.power(grad_t, 2))
+        self.__Idiag = self.__a * self.__Idiag + self.__b * np.power(grad_t, 2)
         mask = np.abs(self.__Idiag) > 1e-8
         self.__v.lr[mask] = self.__eta / np.power(self.__Idiag + self.__eps, self.__c)
-        self.__v.lr[~mask] = self.__Idiag[~mask]
+        if len(self.__v.lr[~mask]): self.__v.lr[~mask] = self.__Idiag[~mask]
         return self.__v
