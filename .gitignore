@@ -11,3 +11,4 @@ sgd/__pycache__/
 sgd/.ropeproject/
 sgd/__pycache__/
 sgd/learning_rate/__pycache__/
+sgd/obsolete_src.py
