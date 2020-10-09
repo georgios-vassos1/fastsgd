@@ -1,11 +1,9 @@
-import numpy as np
-from scipy.optimize import brentq
+import os, time
 from functools import partial
-from scipy.stats import invgamma
-# import statsmodels.api as sm
+from scipy.optimize import brentq
 import pandas as pd
-import os
-import time
+import numpy as np
+from .learning_rate.__init__ import *
 
 
 class SGD:
@@ -32,8 +30,19 @@ class SGD:
         self._pos = (10.0 ** (np.arange(self._size) * np.log10(float(n_iters)) / (self._size-1))).astype(int)
         if self._pos[-1] != n_iters: self._pos[-1] = n_iters
 
-        ## TODO: Set learning rate
-        ## ...
+        ## Set learning rate
+        self._lr_choice = details["lr"]     # type of learning rate: 'one-dim', 'one-dim-eigen', 'd-dim', 'adagrad', 'rmsprop'
+        controls = details["lr_controls"]
+        if self._lr_choice == "one-dim":
+            self._lr_obj = OnedimLR(controls["scale"], controls["gamma"], controls["alpha"], controls["c"])
+        elif self._lr_choice == "one-dim-eigen":
+            self._lr_obj = OnedimEigLR(self._n_params)
+        elif self._lr_choice == "d-dim":
+            self._lr_obj = ddimLR(self._n_params, 1.0, 0.0, 1.0, 1.0, controls["eps"])
+        elif self._lr_choice == "adagrad":
+            self._lr_obj = ddimLR(self._n_params, controls["eta"], 1.0, 1.0, 0.5, controls["eps"])
+        elif self._lr_choice == "rmsprop":
+            self._lr_obj = ddimLR(self._n_params, controls["eta"], controls["a"], 1.0 - controls["a"], 0.5, controls["eps"])
 
 
     def get_value_of(self, attribute: str):
@@ -42,9 +51,9 @@ class SGD:
 
     def convergence(self, theta_new: np.ndarray, theta_old: np.ndarray) -> bool:
         if self._check:
-            qe = np.mean(np.mean((theta_new - self._truth) ** 2))
+            qe = np.mean((theta_new - self._truth) ** 2)
             # print(qe)
-            if qe < 0.001: return True
+            if qe < self._reltol: return True
         elif not self._pass:
             qe = np.mean(np.mean(np.abs(theta_new - theta_old))) / np.mean(np.mean(np.abs(theta_old)))
             if qe < self._reltol: return True
@@ -65,59 +74,7 @@ class SGD:
     def early_stop(self):
         pass
 
-
-# class Implicit_SGD(SGD):
-#     def __init__(self, X, Y, guess, transfer_func = lambda x: x, alpha = 1.0):
-#         self._N = len(X)
-#         self._X = np.array(X)
-#         self._Y = np.array(Y)
-#         self._a = np.array(alpha / np.arange(1, self._N + 1))
-#         self._theta = np.array(guess)
-#         self._alpha = alpha
-#         self._transfer_func = transfer_func
-
-#     def optimize(self):
-#         for n, (x, y) in enumerate(zip(self._X, self._Y)):
-#             r = self._a[n] * (y - self._transfer_func(self._theta @ x))
-#             lb, ub = 0, r
-#             if r < 0: lb, ub = ub, lb
-#             ksi = brentq(partial(self._glm_im, n, x, y), lb, ub, maxiter = 100)
-#             self._theta += ksi * x
-
-#     def _glm_im(self, n, x, y, w): return w - self._a[n] * ( y - self._transfer_func( (self._theta @ x) + (np.linalg.norm(x) ** 2) * w ) )
-
-
-#     @staticmethod
-#     def example(func, bounds = (-1, 1)):
-#         return brentq(func, bounds[0], bounds[1])
-
-
-# if __name__ == "__main__":
-#     print("hi")
-
-#     details = {"method": "implicit", "nparams": 5, "reltol": 1e-10, "npasses": 10,\
-#                "size": 10, "pass": True, "check": True, "truth": np.array([1.0, 1.0, 1.25, 0.5, 0.25]) }
-#     tester = SGD(100000, time, **details)
-
-
-    # data = sm.datasets.scotland.load(as_pandas=True)
-    # data.exog = sm.add_constant(data.exog, prepend=False)
-    # data.exog.to_csv(os.path.join(os.getcwd(), 'glm_test.csv'), index=False, header = True)
-
-    # data = sm.datasets.scotland.load()
-    # data.exog = sm.add_constant(data.exog, prepend=False)
-    # data.exog["Response"] = data.endog
-    # print(data.exog)
-
-
-    # X = data.exog
-    # Y = data.endog
-
-    # tester = Implicit_SGD(X, Y, np.ones(X.shape[1]), alpha = 1.0)
-    # print(tester._theta)
-    # tester.optimize()
-    # print(tester._theta)
-
-
+    def _learning_rate(self, t: int, grad_t: np.ndarray) -> LRvalue:
+        return self._lr_obj(t, grad_t)
 
 
