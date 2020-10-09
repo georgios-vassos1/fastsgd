@@ -9,6 +9,6 @@ class OnedimEigLR(BaseLR):
 
     def __call__(self, t: int, grad_t: np.ndarray) -> LRvalue:
         sum_eigen = np.sum(np.power(grad_t, 2))
-        ## based on the bound of min_eigen <= d / trace(Fisher_matrix)
-        self.__v.lr = 1.0 / ((sum_eigen / self.__d) * t)
+        ## Based on the bound of min_eigen <= d / trace(Fisher_matrix)
+        self.__v.lr = 1.0 / ((sum_eigen / (1.0 * self.__d)) * t)
         return self.__v
