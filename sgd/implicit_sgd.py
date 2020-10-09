@@ -28,8 +28,9 @@ class ImplicitSGD(SGD):
         # self.__delta = details["delta"]
 
     def update(self, t: int, theta_old: np.ndarray, data: data_set, model: model, good_gradient: bool) -> np.ndarray:
-        ## TODO add proper learn rate definition
+        ## Trivial learning rate
         # at = 1.0 / t
+        ## Proper learning rate calculation
         at_v = self._learning_rate(t, model.gradient(t, theta_old, data))
         at = at_v.mean()
 

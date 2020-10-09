@@ -9,8 +9,13 @@ class ExplicitSGD(SGD):
     def update(self, t: int, theta_old: np.ndarray, data: data_set, model: model, good_gradient: bool) -> np.ndarray:
         grad_t = model.gradient(t, theta_old, data)
         if not all(np.isfinite(grad_t)): good_gradient = False
-        ## TODO add proper learn rate definition
-        at = 1.0 / t
+
+        ## Trivial learning rate
+        # at = 1.0 / t
+        ## Proper learning rate calculation
+        at_v = self._learning_rate(t, model.gradient(t, theta_old, data))
+        at = at_v.mean()
+
         return theta_old + (at * grad_t)
 
     def sync_members(self, theta_new: np.ndarray):
