@@ -41,10 +41,11 @@ class LRvalue:
         return np.mean(self.__lr)
 
     ## Only overloading right side multiplication
-    ## No need to overload multiplication from left side
     def __mul__(self, rhs: np.ndarray):
-        self.__lr = self.__lr * rhs
-        return self
+        if self.__type != 2:
+            return self.__lr * rhs
+        else:
+            return self.__lr @ rhs
 
     def __lt__(self, threshold: float) -> bool:
         if isinstance(self.__lr[0], np.ndarray):
