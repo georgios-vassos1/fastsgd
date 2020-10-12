@@ -13,7 +13,7 @@ class ExplicitSGD(SGD):
         ## Trivial learning rate
         # at = 1.0 / t
         ## Proper learning rate calculation
-        at_v = self._learning_rate(t, model.gradient(t, theta_old, data))
+        at_v = self._learning_rate(t, grad_t)
         at = at_v.mean()
 
         return theta_old + (at * grad_t)
