@@ -29,6 +29,11 @@ setup(
     packages=find_packages(where='sgd'),
     python_requires='>=3.7',
     tests_require=['pytest'],
+    install_requires=[
+        'scipy>=1.5.2',
+        'pandas>=1.0.4',
+        'numpy>=1.18.1'
+    ],
 )
 
 
