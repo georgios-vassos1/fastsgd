@@ -8,7 +8,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name="sgd",
-    version="0.0.0",
+    version="0.0.1",
     description="A fast python library for Stochastic Gradient Descent",
     author="George Vassos",
     author_email="georgios.vassos1@maersk.com",
@@ -26,7 +26,8 @@ setup(
             'Programming Language :: Python :: 3.8',
             'Programming Language :: Python :: 3 :: Only',
         ],
-    packages=find_packages(where='sgd'),
+    packages=find_packages(where='sgd')+find_packages(where='learning_rate'),
+    package_dir={'sgd': './sgd', 'learning_rate': './sgd/learning_rate'},
     python_requires='>=3.7',
     tests_require=['pytest'],
     install_requires=[
