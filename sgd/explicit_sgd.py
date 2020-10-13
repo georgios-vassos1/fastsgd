@@ -3,12 +3,12 @@ from .model import *
 
 
 class ExplicitSGD(SGD):
-    def __init__(self, n_samples: int, timer: time, **details):
-        super().__init__(n_samples, timer, **details)
+    def __init__(self, n: int, p: int, timer: time, **kwargs):
+        super().__init__(n, p, timer, method="Explicit SGD", **kwargs)
 
     def update(self, t: int, theta_old: np.ndarray, data: data_set, model: model, good_gradient: bool) -> np.ndarray:
         grad_t = model.gradient(t, theta_old, data)
-        if not all(np.isfinite(grad_t)): good_gradient = False
+        if not np.all(np.isfinite(grad_t)): good_gradient = False
 
         ## Trivial learning rate
         # at = 1.0 / t
@@ -26,8 +26,8 @@ class ExplicitSGD(SGD):
 # if __name__ == "__main__":
 #     print("hi")
 
-#     details = {"method": "implicit", "nparams": 5, "reltol": 1e-10, "npasses": 10,\
+#     kwargs = {"method": "implicit", "nparams": 5, "reltol": 1e-10, "npasses": 10,\
 #                "size": 10, "pass": True, "check": True, "truth": np.array([1.0, 1.0, 1.25, 0.5, 0.25]) }
-#     tester = SGD(100000, time, **details)
+#     tester = SGD(100000, time, **kwargs)
 
 
