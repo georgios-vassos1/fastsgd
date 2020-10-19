@@ -3,7 +3,7 @@ from .family import *
 from .transfer import *
 
 class glm(model):
-    def __init__(self, lambda1: float, lambda2: float, family: str, transfer: str):
+    def __init__(self, family: str, transfer: str, lambda1: float=0.0, lambda2: float=0.0):
         super().__init__("Generalized Linear Model", lambda1, lambda2)
         self._family = family
         self._transfer = transfer
