@@ -1,8 +1,9 @@
 # An efficient implementation of Stochastic Gradient Descent (SGD) procedures for estimation with big data
-
-
-## General information
-
+This repository hosts a fast python library implementating stochastic
+approximation methods for parameter estimation with large data sets. In more
+detail, the traditional SGD and Implicit SGD methods, the latter presented in [[1]](#1), 
+are both included to be used in the estimation of Generalized Linear Models
+(GLMs), or in M-estimation. 
 
 ## Features
 
@@ -17,7 +18,7 @@
 
 
 ## References
-<a href="1">[1]</a> 
+<a href="1", id="1">[1]</a> 
 Toulis, Panos and Airoldi, Edoardo M. (2017).
 Asymptotic and finite-sample properties of estimators based on stochastic gradients.
 *Annals of Statistics*, 45(4), 1694-1727.
