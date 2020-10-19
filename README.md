@@ -13,7 +13,6 @@ Form a design matrix, e.g. X, with your covariates and a vector of your response
 and create a data\_set object with
 ```python
 from sgd import data_set
-
 D = data_set(X, Y)
 ```
 You can create a glm object by providing its family and transfer function names,
@@ -70,7 +69,41 @@ details = {
 
 tester = ImplicitSGD(n, p, timer, **details)
 ```
+At this point you are ready to trigger the implicit iteration. To do that you
+can use a number of auxiliary variables that can keep track of the validity of
+the procedure in case you are not sure whether the argument values that you are
+using is proper.
+```python
+n_passes = tester.get_value_of("n_passes")
+good_gradient = True # Will shift to False if the gradient blows up
+averaging = False # Use averaging to ensure statistical efficiency
+theta_old = np.ones(p) / 100.0 # Random initial values
+theta_old_ave = theta_old # Do the same if you are averaging
+max_iters = n * n_passes
+converged = False
 
+t = 1
+
+while True:
+    theta_new = tester.update(t, theta_old, D, m, good_gradient)
+    if not averaging:
+        tester.sync_members(theta_new)
+        converged = tester.convergence(theta_new, theta_old)
+    else:
+        theta_new_ave = 0.5 * theta_old_ave + 0.5 * theta_new
+        tester.sync_members(theta_new_ave)
+        converged = tester.convergence(theta_new_ave, theta_old_ave)
+        theta_old_ave = theta_new_ave
+    if converged: break
+    theta_old = theta_new
+    if t == max_iters: break
+    t += 1
+```
+If you have a well-defined problem, then the above loop should at some point
+stop and you will be able to verify the final iterate by checking the values of
+```python
+converged, theta_new
+```
 
 ## How to simulate data
 
