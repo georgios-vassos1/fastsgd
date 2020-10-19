@@ -112,13 +112,25 @@ converged, theta_new
 
 
 ## Author
+This package is written and maintained by George Vassos and is heavily based on
+the work done by <a href="http://dustintran.com/">Dustin Tran</a> and <a href="https://www.ptoulis.com/">Panos Toulis</a> 
+on the efficient implementaion of the implicit SGD methods [[2]](#2).
+
+George Vassos
+Associate Research Scientist at A.P. Moller Maersk A/S
+
 
 
 ## References
 <a href="#1">[1]</a> 
-Toulis, Panos and Airoldi, Edoardo M. (2017).
+Toulis, P. and Airoldi, E. M. (2017).
 Asymptotic and finite-sample properties of estimators based on stochastic gradients.
 *Annals of Statistics*, 45(4), 1694-1727.
+
+<a href="#2">[2]</a> 
+Tran, D., Toulis, P. and Airoldi, E. M. (2015).
+Stochastic gradient descent methods for estimation with large data sets.
+*arXiv*, preprint arXiv:1509.06459.
 
 ## Citation
 ```
