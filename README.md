@@ -116,10 +116,8 @@ This package is written and maintained by George Vassos and is heavily based on
 the work done by <a href="http://dustintran.com/">Dustin Tran</a> and <a href="https://www.ptoulis.com/">Panos Toulis</a> 
 on the efficient implementaion of the implicit SGD methods [[2]](#2).
 
-George Vassos
-
-Associate Research Scientist at A.P. Moller Maersk A/S
-
+George Vassos<br/>
+Associate Research Scientist at A.P. Moller Maersk A/S<br/>
 Esplanaden 50, 1263 Copenhagen K, Denmark
 
 
