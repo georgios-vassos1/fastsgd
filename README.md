@@ -106,7 +106,22 @@ converged, theta_new
 ```
 
 ## How to simulate data
+Below we present a code snippet that can be used to generate a $`1500\times 20`$
+design matrix. 
+```python
+import numpy as np
+from sgd import data_set
 
+def simulate_normal_data(theta: np.ndarray, size: tuple=(1500, 20)) -> data_set:
+    N, p = size
+    # Create the covariance matrix with values between 0.5 and 5
+    S = np.eye(p) * np.random.uniform(0.5, 5, p)
+    # Generate the design matrix
+    X = np.random.multivariate_normal(mean=np.zeros(p), cov=S, size=N)
+    # Generate the response vector
+    Y = np.random.normal(X @ theta, 1, size=N)
+    return data_set(X, Y)
+```
 
 ## Installation
 At the moment the library is not uploaded on PyPI. Hence, to install the package
