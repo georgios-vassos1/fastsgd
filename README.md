@@ -122,7 +122,7 @@ on the efficient implementaion of the implicit SGD methods [[2]](#2).
 
 George Vassos<br/>
 Associate Research Scientist at A.P. Moller Maersk A/S<br/>
-Esplanaden 50, 1263 Copenhagen K, Denmark
+Esplanaden 50, 1098 Copenhagen K, Denmark
 
 
 
