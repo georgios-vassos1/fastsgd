@@ -112,7 +112,7 @@ converged, theta_new
 At the moment the library is not uploaded on PyPI. Hence, to install the package
 you have to 
 * clone the repository in your `root` directory
-* run `pip3 install -e /sgd/`
+* run `pip install -e /sgd/`
 
 
 ## Author
