@@ -3,7 +3,7 @@
 .ropeproject/
 .pytest_cache/
 
-sgd.egg-info/
+fastsgd.egg-info/
 
 tests/__pycache__/
 
