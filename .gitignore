@@ -7,8 +7,8 @@ sgd.egg-info/
 
 tests/__pycache__/
 
-sgd/__pycache__/
-sgd/.ropeproject/
-sgd/__pycache__/
-sgd/learning_rate/__pycache__/
-sgd/obsolete_src.py
+fastsgd/__pycache__/
+fastsgd/.ropeproject/
+fastsgd/__pycache__/
+fastsgd/learning_rate/__pycache__/
+fastsgd/obsolete_src.py

@@ -7,7 +7,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name="sgd",
+    name="fastsgd",
     version="0.0.1",
     description="A fast python library for Stochastic Gradient Descent",
     author="George Vassos",
