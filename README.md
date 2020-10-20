@@ -106,8 +106,7 @@ converged, theta_new
 ```
 
 ## How to simulate data
-Below we present a code snippet that can be used to generate a $`1500\times 20`$
-design matrix. 
+Below we present a code snippet that can be used to generate a 1500x20 design matrix. 
 ```python
 import numpy as np
 from fastsgd import data_set
