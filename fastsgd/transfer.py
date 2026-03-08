@@ -34,6 +34,12 @@ class Identity(Transfer):
 
 
 class Inverse(Transfer):
+    """Inverse (reciprocal) transfer function: h(eta) = -1/eta.
+
+    The negative sign follows the convention in McCullagh & Nelder (1989)
+    for the Gamma GLM canonical link, where the linear predictor eta is
+    negative so that mu = -1/eta > 0.
+    """
     def __init__(self):
         super().__init__(lambda x: -1.0 / x)
         self.first_deriv = lambda x: 1.0 / (x ** 2) if x != 0.0 else 0.0

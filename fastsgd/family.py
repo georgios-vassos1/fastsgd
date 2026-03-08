@@ -8,8 +8,24 @@ __all__ = [
 
 
 class Family(ABC):
+    """Abstract base for GLM response distributions.
+
+    Subclasses define the variance function (stored as ``self.variance``) and
+    the deviance, which measures goodness-of-fit on the response scale.
+    """
     @abstractmethod
     def deviance(self, y: np.ndarray, mu: np.ndarray, wt: np.ndarray) -> float:
+        """Return the total deviance D(y, mu) = 2 * sum( wt * d_i ).
+
+        Parameters
+        ----------
+        y : np.ndarray
+            Observed responses.
+        mu : np.ndarray
+            Fitted means (on the response scale, after applying the transfer).
+        wt : np.ndarray
+            Per-observation prior weights (e.g. binomial denominators).
+        """
         pass
 
 

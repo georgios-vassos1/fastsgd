@@ -6,6 +6,47 @@ __all__ = ['SGD']
 
 
 class SGD:
+    """Base class for SGD optimisers. Use ImplicitSGD or ExplicitSGD directly.
+
+    Parameters
+    ----------
+    n : int
+        Number of observations in the dataset.
+    p : int
+        Number of parameters.
+    timer : time module
+        Kept for API compatibility; not currently used internally.
+
+    Keyword arguments
+    -----------------
+    npasses : int, default 10
+        Maximum number of full passes over the data.
+    reltol : float, default 1e-5
+        Convergence tolerance. Interpretation depends on ``check``:
+        - check=False: mean absolute relative change in theta.
+        - check=True:  mean squared error against ``truth``.
+    size : int, default 10
+        Number of parameter snapshots stored, spaced log-uniformly over all
+        iterations. Accessible via ``_estimates`` (shape p × size).
+    lr : str, default 'one-dim'
+        Learning rate schedule. One of:
+        - 'one-dim'       — polynomial decay: scale * gamma * (1 + alpha*gamma*t)^{-c}
+        - 'one-dim-eigen' — eigenvalue-adaptive scalar rate
+        - 'd-dim'         — per-parameter accumulator (AdaGrad-like, c=1)
+        - 'adagrad'       — AdaGrad diagonal: eta / (sum_grad² + eps)^0.5
+        - 'rmsprop'       — RMSProp diagonal: eta / (ewma_grad² + eps)^0.5
+    lr_controls : dict
+        Hyperparameters for the chosen schedule:
+        - 'one-dim':  scale (float), gamma (float), alpha (float), c (float)
+        - 'd-dim':    eps (float)
+        - 'adagrad':  eta (float), eps (float)
+        - 'rmsprop':  eta (float), gamma (float, decay), eps (float)
+    check : bool, default False
+        If True, ``convergence()`` measures MSE against ``truth`` instead of
+        the relative parameter change. Intended for simulations only.
+    truth : np.ndarray, optional
+        True parameter vector used when ``check=True``.
+    """
     def __init__(self, n: int, p: int, timer: time, **kwargs):
         self._name = kwargs.get("method", None)
         self._n_params = p
@@ -51,6 +92,11 @@ class SGD:
             print(attribute + " is not an attribute of the caller.")
 
     def convergence(self, theta_new: np.ndarray, theta_old: np.ndarray) -> bool:
+        """Return True if the stopping criterion is satisfied.
+
+        When ``check=True`` (simulation mode): MSE(theta_new, truth) < reltol.
+        Otherwise: mean |theta_new - theta_old| / mean |theta_old| < reltol.
+        """
         if self._check:
             if np.mean((theta_new - self._truth) ** 2) < self._reltol:
                 return True
@@ -60,6 +106,11 @@ class SGD:
         return False
 
     def sync_members(self, theta_new: np.ndarray):
+        """Record theta_new and advance the iteration counter.
+
+        Snapshots are stored in ``_estimates`` at log-uniformly spaced
+        iterations so that convergence can be inspected post-hoc.
+        """
         self._last_estimate = theta_new
         self._t += 1
         if self._t == self._pos[self._n_recorded]:

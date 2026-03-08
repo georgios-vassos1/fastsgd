@@ -6,6 +6,22 @@ __all__ = ['OnedimLR']
 
 
 class OnedimLR(BaseLR):
+    """Scalar polynomial-decay learning rate.
+
+    Computes: a_t = scale * gamma * (1 + alpha * gamma * t)^{-c}
+
+    Parameters
+    ----------
+    scale : float
+        Multiplicative scale applied to every step size.
+    gamma : float
+        Initial learning rate (step size at t=0 is scale * gamma).
+    alpha : float
+        Controls how quickly the rate decays; larger alpha → faster decay.
+    c : float
+        Decay exponent. Must satisfy 0.5 < c <= 1 for Robbins-Monro
+        convergence guarantees (sum a_t = ∞, sum a_t² < ∞).
+    """
     def __init__(self, scale: float, gamma: float, alpha: float, c: float):
         self.__scale = scale
         self.__gamma = gamma
