@@ -124,9 +124,9 @@ def simulate_normal_data(theta: np.ndarray, size: tuple=(1500, 20)) -> data_set:
 
 ## Installation
 At the moment the library is not uploaded on PyPI. Hence, to install the package
-you have to 
-* clone the repository in your `root` directory
-* run `pip install -e /sgd/`
+you have to
+* clone the repository
+* run `uv pip install -e .` (or `pip install -e .`)
 
 
 ## Author

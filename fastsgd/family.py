@@ -66,7 +66,7 @@ class Inverse_Gaussian(Family):
         pass
 
 class QuasiPoisson(Family):
-    def __init__():
+    def __init__(self):
         pass
 
     def deviance(self, y, mu, wt):

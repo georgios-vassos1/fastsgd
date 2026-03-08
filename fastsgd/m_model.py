@@ -2,11 +2,11 @@ from .model import *
 from .m_loss import HuberLoss
 
 class m_model(model):
-    def __init__(self, loss: str="huber", lambda1: float=0.0, lambda2: float=0.0):
+    def __init__(self, loss: str="huber", l: float=3.0, lambda1: float=0.0, lambda2: float=0.0):
         super().__init__("M estimator", lambda1, lambda2)
         self.__loss = loss
         if self.__loss.lower() == 'huber':
-            self.__l = 3.0 # default for huber loss
+            self.__l = l
             self.__lossobj = HuberLoss()
         else:
             print("At the moment the module only supports huber loss. Set loss='huber'.")
@@ -17,8 +17,7 @@ class m_model(model):
     @property
     def l(self): return self.__l
 
-    def gradient(self, t:int, theta_old: np.ndarray, data: data_set) -> np.ndarray:
-        datum = data.get_data_point(t)
+    def _gradient_at_point(self, datum: data_point, theta_old: np.ndarray) -> np.ndarray:
         return self.__lossobj.first_deriv(datum._y - (datum._x @ theta_old), self.__l) * datum._x - self.gradient_penalty(theta_old)
 
     ## Functions for the implicit iteration

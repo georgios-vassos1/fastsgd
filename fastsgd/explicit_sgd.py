@@ -8,7 +8,8 @@ class ExplicitSGD(SGD):
 
     def update(self, t: int, theta_old: np.ndarray, data: data_set, model: model, good_gradient: bool) -> np.ndarray:
         grad_t = model.gradient(t, theta_old, data)
-        if not np.all(np.isfinite(grad_t)): good_gradient = False
+        if not np.all(np.isfinite(grad_t)):
+            self._good_gradient = False
 
         ## Trivial learning rate
         # at = 1.0 / t

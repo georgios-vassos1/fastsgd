@@ -1,0 +1,54 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fastsgd"
+version = "0.0.1"
+description = "A fast python library for Stochastic Gradient Descent"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "George Vassos", email = "georgios.vassos1@maersk.com" }
+]
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "numpy>=1.18.1",
+    "scipy>=1.5.2",
+    "pandas>=1.0.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "ruff",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["fastsgd"]
+
+[tool.pytest.ini_options]
+norecursedirs = [".eggs"]
+log_file = "tests/pytest.log"
+log_file_level = "DEBUG"
+log_file_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_file_date_format = "%Y-%m-%d %H:%M:%S"
+python_files = ["test_*.py"]
+log_cli = true
+
+[tool.ruff]
+line-length = 120

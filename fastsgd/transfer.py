@@ -52,7 +52,7 @@ class Logistic(Transfer):
         super().__init__(lambda x: self.__sigmoid(x))
         self.g = lambda x: np.log(x / (1.0 - x)) if all([x > 0.0, x < 1.0]) else 0.0
         self.first_deriv = lambda x: self.__sigmoid(x) * (1.0 - self.__sigmoid(x))
-        self.second_deriv = lambda x: 2 * (self.__sigmoid(x) ** 3) - 3 * (self.__sigmoid(x) ** 2) + 2 * self.__sigmoid(x)
+        self.second_deriv = lambda x: 2 * (self.__sigmoid(x) ** 3) - 3 * (self.__sigmoid(x) ** 2) + self.__sigmoid(x)
 
     def __sigmoid(self, x): return 1.0 / (1.0 + np.exp(-x))
 

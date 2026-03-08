@@ -3,7 +3,7 @@ from functools import partial
 from scipy.optimize import brentq
 import pandas as pd
 import numpy as np
-from .learning_rate.__init__ import *
+from .learning_rate import *
 
 
 class SGD:
@@ -21,6 +21,7 @@ class SGD:
         self._n_recorded = 0              # number of coefs that have been recorded
         self._pos = np.zeros(self._size)  # the iteration of recorded coefs
         self._pass = kwargs.get("pass", True) # force running for n_passes on data
+        self._good_gradient = True
         self._check = kwargs.get("check", False)
         if self._check: self._truth = kwargs.get("truth", None)
 

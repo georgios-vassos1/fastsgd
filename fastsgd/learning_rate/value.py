@@ -53,7 +53,9 @@ class LRvalue:
         return np.all(self.__lr < threshold)
 
     def __gt__(self, threshold: float) -> bool:
-        return not(self < threshold)
+        if isinstance(self.__lr[0], np.ndarray):
+            return np.all(np.diagonal(self.__lr) > threshold)
+        return np.all(self.__lr > threshold)
 
 
 # if __name__=='__main__':

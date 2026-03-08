@@ -23,8 +23,7 @@ class glm(model):
         except: print("Warning: try one of the following transfer functions: identity, exponential, inverse, or logistic!!\n")
 
 
-    def gradient(self, t: int, theta_old: np.ndarray, data: data_set) -> np.ndarray:
-        datum = data.get_data_point(t)
+    def _gradient_at_point(self, datum: data_point, theta_old: np.ndarray) -> np.ndarray:
         return ((datum._y - self._transfer_instance.h(datum._x @ theta_old)) * datum._x) - self.gradient_penalty(theta_old)
 
     def scale_factor(self, ksi: float, at: float, datum: data_point, theta_old: np.ndarray, normx: float):

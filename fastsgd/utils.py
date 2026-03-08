@@ -5,9 +5,9 @@ import numpy as np
 
 class DataLoader:
     def __init__(self, dbcon = None, data_path = None, data_uri = None):
-        self._dbcon = dbcon,
+        self._dbcon = dbcon
         self._data_path = data_path
-        self_data_uri = data_uri
+        self._data_uri = data_uri
 
     def load_from_file(self, path: str):
         pass

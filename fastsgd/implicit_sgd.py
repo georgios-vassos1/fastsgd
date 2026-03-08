@@ -28,15 +28,16 @@ class ImplicitSGD(SGD):
         # self.__delta = details["delta"]
 
     def update(self, t: int, theta_old: np.ndarray, data: data_set, model: model, good_gradient: bool) -> np.ndarray:
-        grad_t = model.gradient(t, theta_old, data)
-        if not np.all(np.isfinite(grad_t)): good_gradient = False
+        datum = data.get_data_point(t)
+        grad_t = model._gradient_at_point(datum, theta_old)
+        if not np.all(np.isfinite(grad_t)):
+            self._good_gradient = False
         ## Trivial learning rate
         # at = 1.0 / t
         ## Proper learning rate calculation
         at_v = self._learning_rate(t, grad_t)
         at = at_v.mean()
 
-        datum = data.get_data_point(t)
         normx = np.linalg.norm(datum._x)
 
         ksi = 0
