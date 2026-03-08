@@ -45,18 +45,6 @@ class MModel(Model):
             self._l,
         )
 
-    def scale_factor_first_deriv(self, ksi: float, at: float, datum: DataPoint, theta_old: np.ndarray, normx: float) -> float:
-        return self._lossobj.second_deriv(
-            datum._y - (datum._x @ theta_old) - at * (self.gradient_penalty(theta_old) @ datum._x) + ksi * normx,
-            self._l,
-        ) * normx
-
-    def scale_factor_second_deriv(self, ksi: float, at: float, datum: DataPoint, theta_old: np.ndarray, normx: float) -> float:
-        return self._lossobj.third_deriv(
-            datum._y - (datum._x @ theta_old) - at * (self.gradient_penalty(theta_old) @ datum._x) + ksi * normx,
-            self._l,
-        ) * normx * normx
-
 
 # Backward-compatible alias
 m_model = MModel

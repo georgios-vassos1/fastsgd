@@ -16,9 +16,6 @@ class Transfer:
     def h_vec(self, u: np.ndarray) -> np.ndarray:
         return self.h(u)
 
-    def g_vec(self, u: np.ndarray) -> np.ndarray:
-        return self.g(u)
-
     def first_deriv_vec(self, u: np.ndarray) -> np.ndarray:
         return self.first_deriv(u)
 
@@ -29,7 +26,6 @@ class Transfer:
 class Identity(Transfer):
     def __init__(self):
         super().__init__(lambda x: x)
-        self.g = self.h
         self.first_deriv = lambda x: np.ones_like(np.asarray(x, dtype=float))
         self.second_deriv = lambda x: np.zeros_like(np.asarray(x, dtype=float))
 
@@ -40,7 +36,6 @@ class Identity(Transfer):
 class Inverse(Transfer):
     def __init__(self):
         super().__init__(lambda x: -1.0 / x)
-        self.g = self.h
         self.first_deriv = lambda x: 1.0 / (x ** 2) if x != 0.0 else 0.0
         self.second_deriv = lambda x: -2.0 / (x ** 3) if x != 0.0 else 0.0
 
@@ -56,7 +51,6 @@ class Inverse(Transfer):
 class Exponential(Transfer):
     def __init__(self):
         super().__init__(np.exp)
-        self.g = lambda x: np.log(x) if np.all(np.asarray(x) > 0.0) else 0.0
         self.first_deriv = np.exp
         self.second_deriv = np.exp
 
@@ -64,7 +58,6 @@ class Exponential(Transfer):
 class Logistic(Transfer):
     def __init__(self):
         super().__init__(self._sigmoid)
-        self.g = lambda x: np.log(x / (1.0 - x)) if np.all((np.asarray(x) > 0.0) & (np.asarray(x) < 1.0)) else 0.0
         self.first_deriv = lambda x: self._sigmoid(x) * (1.0 - self._sigmoid(x))
         self.second_deriv = lambda x: 2 * (self._sigmoid(x) ** 3) - 3 * (self._sigmoid(x) ** 2) + self._sigmoid(x)
 

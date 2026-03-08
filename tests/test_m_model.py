@@ -71,8 +71,3 @@ class TestMModelScaleFactor:
         # ksi=0: residual = y - x^T theta = 1.0, first_deriv(1.0, 3.0) = 1.0
         sf = self.m.scale_factor(0.0, 0.1, self.datum, self.theta, self.normx)
         assert sf == pytest.approx(1.0)
-
-    def test_scale_factor_first_deriv_quadratic_branch(self):
-        # second_deriv of huber in quadratic branch = 1.0, times normx
-        sfd = self.m.scale_factor_first_deriv(0.0, 0.1, self.datum, self.theta, self.normx)
-        assert sfd == pytest.approx(self.normx)

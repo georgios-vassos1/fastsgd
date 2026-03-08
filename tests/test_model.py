@@ -23,6 +23,12 @@ class TestGradientPenalty:
         def scale_factor(self, ksi, at, datum, theta_old, normx):
             return 0.0
 
+        def score_matrix(self, data, theta):
+            return np.zeros((data._n, data._p))
+
+        def hessian_weights(self, data, theta):
+            return np.ones(data._n)
+
     def setup_method(self):
         self.theta = np.array([1.0, -2.0, 0.0, 3.0])
 

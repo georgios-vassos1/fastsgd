@@ -1,22 +1,6 @@
 import numpy as np
 
-__all__ = ['DataLoader', 'DataPoint', 'DataSet', 'data_point', 'data_set']
-
-
-class DataLoader:
-    def __init__(self, dbcon=None, data_path=None, data_uri=None):
-        self._dbcon = dbcon
-        self._data_path = data_path
-        self._data_uri = data_uri
-
-    def load_from_file(self, path: str):
-        pass
-
-    def load_from_query(self, query_str: str):
-        pass
-
-    def load_from_uri(self, uri: str):
-        pass
+__all__ = ['DataPoint', 'DataSet', 'data_point', 'data_set']
 
 
 class DataPoint:

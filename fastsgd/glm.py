@@ -39,16 +39,6 @@ class GLM(Model):
             (theta_old @ datum._x) - at * (self.gradient_penalty(theta_old) @ datum._x) + ksi * normx
         )
 
-    def scale_factor_first_deriv(self, ksi: float, at: float, datum: DataPoint, theta_old: np.ndarray, normx: float) -> float:
-        return self._transfer_instance.first_deriv(
-            (theta_old @ datum._x) - at * (self.gradient_penalty(theta_old) @ datum._x) + ksi * normx
-        ) * normx
-
-    def scale_factor_second_deriv(self, ksi: float, at: float, datum: DataPoint, theta_old: np.ndarray, normx: float) -> float:
-        return self._transfer_instance.second_deriv(
-            (theta_old @ datum._x) - at * (self.gradient_penalty(theta_old) @ datum._x) + ksi * normx
-        ) * (normx ** 2)
-
     def score_matrix(self, data: DataSet, theta: np.ndarray) -> np.ndarray:
         eta = data._X @ theta
         resid = data._Y - self._transfer_instance.h_vec(eta)
@@ -57,21 +47,6 @@ class GLM(Model):
     def hessian_weights(self, data: DataSet, theta: np.ndarray) -> np.ndarray:
         eta = data._X @ theta
         return np.asarray(self._transfer_instance.first_deriv_vec(eta), dtype=float).ravel()
-
-    def scale_factor_vec(self, ksi: float, a: np.ndarray, data: DataSet, theta_old: np.ndarray, normx: np.ndarray) -> np.ndarray:
-        return data._Y - self._transfer_instance.h_vec(
-            (theta_old @ data._X) - a * (self.gradient_penalty(theta_old) @ data._X) + ksi * normx
-        )
-
-    def scale_factor_first_deriv_vec(self, ksi: float, a: np.ndarray, data: DataSet, theta_old: np.ndarray, normx: np.ndarray) -> np.ndarray:
-        return self._transfer_instance.first_deriv_vec(
-            (theta_old @ data._X) - a * (self.gradient_penalty(theta_old) @ data._X) + ksi * normx
-        ) * normx
-
-    def scale_factor_second_deriv_vec(self, ksi: float, a: np.ndarray, data: DataSet, theta_old: np.ndarray, normx: np.ndarray) -> np.ndarray:
-        return self._transfer_instance.second_deriv_vec(
-            (theta_old @ data._X) - a * (self.gradient_penalty(theta_old) @ data._X) + ksi * normx
-        ) * (normx ** 2)
 
 
 # Backward-compatible alias

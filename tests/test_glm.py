@@ -80,13 +80,3 @@ class TestGLMScaleFactor:
         # scale_factor(ksi=0) = y - (theta @ x) = 5 - 3 = 2
         sf = self.m.scale_factor(0.0, 0.1, self.datum, self.theta, self.normx)
         assert sf == pytest.approx(self.y - self.x @ self.theta)
-
-    def test_scale_factor_first_deriv_gaussian_identity(self):
-        # first_deriv of identity is 1, so result = 1 * normx
-        sfd = self.m.scale_factor_first_deriv(0.0, 0.1, self.datum, self.theta, self.normx)
-        assert sfd == pytest.approx(self.normx)
-
-    def test_scale_factor_second_deriv_gaussian_identity(self):
-        # second_deriv of identity is 0
-        sfdd = self.m.scale_factor_second_deriv(0.0, 0.1, self.datum, self.theta, self.normx)
-        assert sfdd == pytest.approx(0.0)

@@ -14,7 +14,6 @@ class SGD:
         self._size = kwargs.get("size", 10)          # number of estimates to be recorded (log-uniformly)
         self._estimates = np.zeros((self._n_params, self._size))
         self._last_estimate = np.zeros(self._n_params)
-        self._times = np.zeros(self._size)
         self._timer = timer
         self._t = 0
         self._n_recorded = 0              # number of coefs that have been recorded

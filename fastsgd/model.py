@@ -22,18 +22,10 @@ class Model(ABC):
     def gradient_penalty(self, theta: np.ndarray) -> np.ndarray:
         return self._lambda1 * np.sign(theta) + self._lambda2 * theta
 
-    ## Functions for the implicit update
+    ## Fixed-point equation for the implicit update:
     ## ell'(x^T theta + at x^T grad(penalty) + ksi ||x||^2)
     @abstractmethod
     def scale_factor(self, ksi: float, at: float, datum: DataPoint, theta_old: np.ndarray, normx: float) -> float:
-        pass
-
-    ## d/d(ksi) ell'
-    def scale_factor_first_deriv(self, ksi: float, at: float, datum: DataPoint, theta_old: np.ndarray, normx: float) -> float:
-        pass
-
-    ## d^2/d(ksi)^2 ell'
-    def scale_factor_second_deriv(self, ksi: float, at: float, datum: DataPoint, theta_old: np.ndarray, normx: float) -> float:
         pass
 
     ## Covariance estimation

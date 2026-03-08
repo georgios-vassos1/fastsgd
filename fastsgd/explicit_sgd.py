@@ -16,7 +16,3 @@ class ExplicitSGD(SGD):
             self._good_gradient = False
         at = self._learning_rate(t, grad_t).mean()
         return theta_old + at * grad_t
-
-    def sync_members(self, theta_new: np.ndarray):
-        super().sync_members(theta_new)
-        return self
