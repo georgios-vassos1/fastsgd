@@ -4,7 +4,7 @@ from fastsgd.learning_rate.value import LRvalue
 from fastsgd.learning_rate.base import BaseLR
 from fastsgd.learning_rate.onedim import OnedimLR
 from fastsgd.learning_rate.onedim_eig import OnedimEigLR
-from fastsgd.learning_rate.ddim import DDimLR, ddimLR
+from fastsgd.learning_rate.ddim import DDimLR
 
 
 class TestLRvalue:
@@ -140,9 +140,6 @@ class TestDDimLR:
         result = lr(1, grad)
         expected = 1.0 / np.sqrt(1.0 * np.ones(d) + 1.0 * grad ** 2 + 1e-6)
         assert np.allclose(result.lr, expected)
-
-    def test_ddim_alias(self):
-        assert ddimLR is DDimLR
 
     def test_vector_output_shape(self):
         d = 5

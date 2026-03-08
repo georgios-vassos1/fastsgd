@@ -1,9 +1,9 @@
 import numpy as np
 from .utils import DataPoint, DataSet
-from .model import *
+from .model import Model
 from .loss import HuberLoss
 
-__all__ = ['MModel', 'm_model']
+__all__ = ['MModel']
 
 
 class MModel(Model):
@@ -48,6 +48,3 @@ class MModel(Model):
             self._l,
         )
 
-
-# Backward-compatible alias
-m_model = MModel

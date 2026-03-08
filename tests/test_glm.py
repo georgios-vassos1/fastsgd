@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from fastsgd.glm import GLM, glm
+from fastsgd.glm import GLM
 from fastsgd.utils import DataPoint, DataSet
 
 
@@ -24,9 +24,6 @@ class TestGLMConstruction:
     def test_invalid_transfer_raises(self):
         with pytest.raises(ValueError, match="Unknown transfer"):
             GLM(family='gaussian', transfer='invalid')
-
-    def test_glm_alias(self):
-        assert glm is GLM
 
     def test_repr(self):
         m = GLM(family='gaussian', transfer='identity')

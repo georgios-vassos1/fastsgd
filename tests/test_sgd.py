@@ -132,6 +132,7 @@ class TestAveragedEstimate:
 
 
 class TestGoodGradient:
+    @pytest.mark.filterwarnings("ignore::RuntimeWarning")
     def test_good_gradient_set_false_on_inf(self):
         D, _ = make_gaussian_problem()
         m = GLM(family='gaussian', transfer='identity')

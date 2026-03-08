@@ -1,7 +1,7 @@
 import numpy as np
 from .utils import DataSet
-from .sgd import *
-from .model import *
+from .sgd import SGD
+from .model import Model
 
 __all__ = ['ExplicitSGD']
 

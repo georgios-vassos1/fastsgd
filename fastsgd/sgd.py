@@ -60,13 +60,12 @@ class SGD(ABC):
         self._t = 0
         self._n_recorded = 0              # number of coefs that have been recorded
         self._pos = np.zeros(self._size)  # the iteration of recorded coefs
-        self._pass = kwargs.get("pass", True)  # force running for n_passes on data
         self._good_gradient = True
         self._check = kwargs.get("check", False)
         if self._check:
             self._truth = kwargs.get("truth", None)
 
-        ## Select the iterations to store estimates
+        # Select the iterations to store estimates
         n_iters = n * self._n_passes
         self._pos = (10.0 ** (np.arange(self._size) * np.log10(float(n_iters)) / (self._size - 1))).astype(int)
         if self._pos[-1] != n_iters:

@@ -1,8 +1,8 @@
 import numpy as np
 from scipy.optimize import brentq
 from .utils import DataPoint, DataSet
-from .sgd import *
-from .model import *
+from .sgd import SGD
+from .model import Model
 
 __all__ = ['ImplicitSGD', 'ImplicitFn']
 

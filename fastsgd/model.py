@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 import numpy as np
-from .utils import *
+from .utils import DataPoint, DataSet
 
-__all__ = ['Model', 'model']
+__all__ = ['Model']
 
 
 class Model(ABC):
@@ -49,6 +49,3 @@ class Model(ABC):
         """
         pass
 
-
-# Backward-compatible alias
-model = Model

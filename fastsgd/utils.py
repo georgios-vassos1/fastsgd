@@ -1,6 +1,6 @@
 import numpy as np
 
-__all__ = ['DataPoint', 'DataSet', 'data_point', 'data_set']
+__all__ = ['DataPoint', 'DataSet']
 
 
 class DataPoint:
@@ -27,7 +27,3 @@ class DataSet:
         t = (t - 1) % self._n
         return DataPoint(self._X[t], self._Y[t], t)
 
-
-# Backward-compatible aliases
-data_point = DataPoint
-data_set = DataSet

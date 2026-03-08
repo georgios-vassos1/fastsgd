@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from fastsgd.model import Model, model
+from fastsgd.model import Model
 from fastsgd.utils import DataPoint, DataSet
 
 
@@ -8,9 +8,6 @@ class TestModelABC:
     def test_cannot_instantiate_directly(self):
         with pytest.raises(TypeError):
             Model("test", 0.0, 0.0)
-
-    def test_alias(self):
-        assert model is Model
 
 
 class TestGradientPenalty:

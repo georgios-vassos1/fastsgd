@@ -2,7 +2,7 @@ import numpy as np
 from .base import BaseLR
 from .value import LRvalue
 
-__all__ = ['DDimLR', 'ddimLR']
+__all__ = ['DDimLR']
 
 
 class DDimLR(BaseLR):
@@ -36,6 +36,3 @@ class DDimLR(BaseLR):
             self.__v.lr[~mask] = self.__Idiag[~mask]
         return self.__v
 
-
-# Backward-compatible alias
-ddimLR = DDimLR

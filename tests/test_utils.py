@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from fastsgd.utils import DataPoint, DataSet, data_point, data_set
+from fastsgd.utils import DataPoint, DataSet
 
 
 class TestDataPoint:
@@ -66,10 +66,3 @@ class TestDataSetValidation:
         assert D._X.dtype == np.float64
         assert D._Y.dtype == np.float64
 
-
-class TestBackwardAliases:
-    def test_data_point_alias(self):
-        assert data_point is DataPoint
-
-    def test_data_set_alias(self):
-        assert data_set is DataSet

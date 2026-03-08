@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from fastsgd.m_model import MModel, m_model
+from fastsgd.m_model import MModel
 from fastsgd.utils import DataPoint, DataSet
 
 
@@ -16,9 +16,6 @@ class TestMModelConstruction:
     def test_invalid_loss_raises(self):
         with pytest.raises(ValueError, match="Unsupported loss"):
             MModel(loss='squared')
-
-    def test_m_model_alias(self):
-        assert m_model is MModel
 
     def test_repr(self):
         m = MModel(loss='huber', l=1.5)

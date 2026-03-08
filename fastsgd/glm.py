@@ -1,10 +1,10 @@
 import numpy as np
 from .utils import DataPoint, DataSet
-from .model import *
-from .family import *
-from .transfer import *
+from .model import Model
+from .family import Gaussian, Poisson, Gamma, Binomial
+from .transfer import Identity, Exponential, Inverse, Logistic
 
-__all__ = ['GLM', 'glm']
+__all__ = ['GLM']
 
 
 class GLM(Model):
@@ -63,6 +63,3 @@ class GLM(Model):
         v_mu = np.asarray(self._family_instance.variance(mu), dtype=float).ravel()
         return h_prime ** 2 / v_mu
 
-
-# Backward-compatible alias
-glm = GLM
