@@ -85,6 +85,15 @@ class SGD(ABC):
             self._lr_obj = DDimLR(self._n_params, controls["eta"], 1.0, 1.0, 0.5, controls["eps"])
         elif self._lr_choice == "rmsprop":
             self._lr_obj = DDimLR(self._n_params, controls["eta"], controls["gamma"], 1.0 - controls["gamma"], 0.5, controls["eps"])
+        else:
+            raise ValueError(
+                f"Unknown learning rate '{self._lr_choice}'. "
+                "Choose from: 'one-dim', 'one-dim-eigen', 'd-dim', 'adagrad', 'rmsprop'."
+            )
+
+    def __repr__(self) -> str:
+        return (f"{type(self).__name__}(p={self._n_params}, "
+                f"lr='{self._lr_choice}', npasses={self._n_passes})")
 
     @abstractmethod
     def update(self, t: int, theta_old: np.ndarray, data, model, good_gradient: bool) -> np.ndarray:

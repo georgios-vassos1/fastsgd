@@ -20,6 +20,10 @@ class TestMModelConstruction:
     def test_m_model_alias(self):
         assert m_model is MModel
 
+    def test_repr(self):
+        m = MModel(loss='huber', l=1.5)
+        assert repr(m) == "MModel(loss='huber', l=1.5)"
+
     def test_loss_property(self):
         m = MModel(loss='huber')
         assert m.loss == 'huber'

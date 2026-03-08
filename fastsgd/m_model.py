@@ -24,6 +24,9 @@ class MModel(Model):
     def l(self):
         return self._l
 
+    def __repr__(self) -> str:
+        return f"MModel(loss='{self._loss_name}', l={self._l})"
+
     def _gradient_at_point(self, datum: DataPoint, theta_old: np.ndarray) -> np.ndarray:
         return (
             self._lossobj.first_deriv(datum._y - (datum._x @ theta_old), self._l) * datum._x

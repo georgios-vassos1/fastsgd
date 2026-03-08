@@ -32,6 +32,15 @@ class TestSGDInit:
         with pytest.raises(AttributeError):
             sgd.get_value_of("nonexistent")
 
+    def test_repr_contains_class_name(self):
+        sgd = ImplicitSGD(100, 3, time, lr='adagrad', lr_controls={'eta': 1.0, 'eps': 1e-6})
+        assert 'ImplicitSGD' in repr(sgd)
+        assert 'adagrad' in repr(sgd)
+
+    def test_unknown_lr_raises(self):
+        with pytest.raises(ValueError, match="Unknown learning rate"):
+            ExplicitSGD(100, 3, time, lr='invalid')
+
     def test_all_lr_choices_initialise(self):
         n, p = 100, 3
         for lr, controls in [

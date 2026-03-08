@@ -12,9 +12,15 @@ class TestFamilyABC:
             Family()
 
     def test_stub_families_instantiate(self):
-        # Stub families implement deviance (with pass), so they are concrete
+        # Stub families are concrete (deviance raises NotImplementedError, not TypeError)
         for cls in (Inverse_Gaussian, QuasiPoisson, QuasiBinomial, Quasi):
             cls()  # should not raise
+
+    def test_stub_families_deviance_raises(self):
+        y = mu = wt = np.ones(3)
+        for cls in (Inverse_Gaussian, QuasiPoisson, QuasiBinomial, Quasi):
+            with pytest.raises(NotImplementedError):
+                cls().deviance(y, mu, wt)
 
 
 class TestGaussian:

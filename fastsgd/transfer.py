@@ -1,17 +1,32 @@
+from abc import ABC, abstractmethod
 import numpy as np
 
 __all__ = ['Transfer', 'Identity', 'Exponential', 'Inverse', 'Logistic']
 
 
-class Transfer:
-    """Base class for GLM link (transfer) functions.
+class Transfer(ABC):
+    """Abstract base class for GLM transfer (inverse-link) functions.
 
-    Subclasses set self.h, self.g, self.first_deriv, self.second_deriv as
-    NumPy-compatible callables. The _vec variants call these directly; subclasses
-    may override them when the scalar form requires conditional logic.
+    Subclasses must implement ``h``, ``first_deriv``, and ``second_deriv``
+    as NumPy-compatible callables that accept both scalars and arrays.
+    The ``_vec`` variants delegate to these methods; subclasses only need
+    to override them if the base implementation is insufficient.
     """
-    def __init__(self, h):
-        self.h = h
+
+    @abstractmethod
+    def h(self, eta: np.ndarray) -> np.ndarray:
+        """Apply the transfer function: mu = h(eta)."""
+        pass
+
+    @abstractmethod
+    def first_deriv(self, eta: np.ndarray) -> np.ndarray:
+        """First derivative h'(eta)."""
+        pass
+
+    @abstractmethod
+    def second_deriv(self, eta: np.ndarray) -> np.ndarray:
+        """Second derivative h''(eta)."""
+        pass
 
     def h_vec(self, u: np.ndarray) -> np.ndarray:
         return self.h(u)
@@ -24,13 +39,14 @@ class Transfer:
 
 
 class Identity(Transfer):
-    def __init__(self):
-        super().__init__(lambda x: x)
-        self.first_deriv = lambda x: np.ones_like(np.asarray(x, dtype=float))
-        self.second_deriv = lambda x: np.zeros_like(np.asarray(x, dtype=float))
+    def h(self, eta):
+        return eta
 
-    def __str__(self):
-        return "This is an instance of the Identity class."
+    def first_deriv(self, eta):
+        return np.ones_like(np.asarray(eta, dtype=float))
+
+    def second_deriv(self, eta):
+        return np.zeros_like(np.asarray(eta, dtype=float))
 
 
 class Inverse(Transfer):
@@ -40,32 +56,43 @@ class Inverse(Transfer):
     for the Gamma GLM canonical link, where the linear predictor eta is
     negative so that mu = -1/eta > 0.
     """
-    def __init__(self):
-        super().__init__(lambda x: -1.0 / x)
-        self.first_deriv = lambda x: 1.0 / (x ** 2) if x != 0.0 else 0.0
-        self.second_deriv = lambda x: -2.0 / (x ** 3) if x != 0.0 else 0.0
 
-    def first_deriv_vec(self, u: np.ndarray) -> np.ndarray:
-        safe = np.where(u != 0.0, u, 1.0)
-        return np.where(u != 0.0, 1.0 / (safe ** 2), 0.0)
+    def h(self, eta):
+        return -1.0 / eta
 
-    def second_deriv_vec(self, u: np.ndarray) -> np.ndarray:
-        safe = np.where(u != 0.0, u, 1.0)
-        return np.where(u != 0.0, -2.0 / (safe ** 3), 0.0)
+    def first_deriv(self, eta):
+        eta = np.asarray(eta, dtype=float)
+        safe = np.where(eta != 0.0, eta, 1.0)
+        return np.where(eta != 0.0, 1.0 / (safe ** 2), 0.0)
+
+    def second_deriv(self, eta):
+        eta = np.asarray(eta, dtype=float)
+        safe = np.where(eta != 0.0, eta, 1.0)
+        return np.where(eta != 0.0, -2.0 / (safe ** 3), 0.0)
 
 
 class Exponential(Transfer):
-    def __init__(self):
-        super().__init__(np.exp)
-        self.first_deriv = np.exp
-        self.second_deriv = np.exp
+    def h(self, eta):
+        return np.exp(eta)
+
+    def first_deriv(self, eta):
+        return np.exp(eta)
+
+    def second_deriv(self, eta):
+        return np.exp(eta)
 
 
 class Logistic(Transfer):
-    def __init__(self):
-        super().__init__(self._sigmoid)
-        self.first_deriv = lambda x: self._sigmoid(x) * (1.0 - self._sigmoid(x))
-        self.second_deriv = lambda x: 2 * (self._sigmoid(x) ** 3) - 3 * (self._sigmoid(x) ** 2) + self._sigmoid(x)
+    def h(self, eta):
+        return self._sigmoid(eta)
+
+    def first_deriv(self, eta):
+        s = self._sigmoid(eta)
+        return s * (1.0 - s)
+
+    def second_deriv(self, eta):
+        s = self._sigmoid(eta)
+        return 2 * (s ** 3) - 3 * (s ** 2) + s
 
     @staticmethod
     def _sigmoid(x):

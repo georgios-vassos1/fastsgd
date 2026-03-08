@@ -28,6 +28,10 @@ class TestGLMConstruction:
     def test_glm_alias(self):
         assert glm is GLM
 
+    def test_repr(self):
+        m = GLM(family='gaussian', transfer='identity')
+        assert repr(m) == "GLM(family='gaussian', transfer='identity')"
+
     def test_lambda_defaults_to_zero(self):
         m = GLM(family='gaussian', transfer='identity')
         assert m._lambda1 == 0.0

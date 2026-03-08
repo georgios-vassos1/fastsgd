@@ -46,6 +46,27 @@ class TestDataSet:
         assert isinstance(dp, DataPoint)
 
 
+class TestDataSetValidation:
+    def test_1d_X_raises(self):
+        with pytest.raises(ValueError, match="2-D"):
+            DataSet(np.array([1.0, 2.0]), np.array([1.0, 2.0]))
+
+    def test_2d_Y_raises(self):
+        with pytest.raises(ValueError, match="1-D"):
+            DataSet(np.array([[1.0, 2.0]]), np.array([[1.0]]))
+
+    def test_mismatched_lengths_raises(self):
+        with pytest.raises(ValueError, match="same number"):
+            DataSet(np.ones((3, 2)), np.ones(4))
+
+    def test_integer_arrays_coerced_to_float(self):
+        X = np.array([[1, 2], [3, 4]])
+        Y = np.array([1, 2])
+        D = DataSet(X, Y)
+        assert D._X.dtype == np.float64
+        assert D._Y.dtype == np.float64
+
+
 class TestBackwardAliases:
     def test_data_point_alias(self):
         assert data_point is DataPoint

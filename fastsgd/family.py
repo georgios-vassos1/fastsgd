@@ -1,10 +1,7 @@
 from abc import ABC, abstractmethod
 import numpy as np
 
-__all__ = [
-    'Family', 'Gaussian', 'Poisson', 'Gamma', 'Binomial',
-    'Inverse_Gaussian', 'QuasiPoisson', 'QuasiBinomial', 'Quasi',
-]
+__all__ = ['Family', 'Gaussian', 'Poisson', 'Gamma', 'Binomial']
 
 
 class Family(ABC):
@@ -75,19 +72,19 @@ class Binomial(Family):
 
 class Inverse_Gaussian(Family):
     def deviance(self, y, mu, wt):
-        pass
+        raise NotImplementedError("Inverse_Gaussian.deviance is not yet implemented.")
 
 
 class QuasiPoisson(Family):
     def deviance(self, y, mu, wt):
-        pass
+        raise NotImplementedError("QuasiPoisson.deviance is not yet implemented.")
 
 
 class QuasiBinomial(Family):
     def deviance(self, y, mu, wt):
-        pass
+        raise NotImplementedError("QuasiBinomial.deviance is not yet implemented.")
 
 
 class Quasi(Family):
     def deviance(self, y, mu, wt):
-        pass
+        raise NotImplementedError("Quasi.deviance is not yet implemented.")

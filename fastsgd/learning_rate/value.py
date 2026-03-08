@@ -4,16 +4,20 @@ __all__ = ['LRvalue']
 
 
 class LRvalue:
+    """Thin wrapper around a numpy learning-rate array.
+
+    seq_type 0 — scalar (shape (1,))
+    seq_type 1 — per-parameter vector (shape (d,))
+    """
+
     def __init__(self, seq_type: int, d: int = None):
         self.__type = seq_type
         if self.__type == 0:
             self.__lr = np.array([1.0])
         elif self.__type == 1:
             self.__lr = np.ones(d)
-        elif self.__type == 2:
-            self.__lr = np.eye(d)
         else:
-            raise ValueError("seq_type must be 0 (scalar), 1 (vector), or 2 (matrix).")
+            raise ValueError("seq_type must be 0 (scalar) or 1 (vector).")
 
     @property
     def type(self) -> int:
@@ -31,28 +35,19 @@ class LRvalue:
         self.__update_type()
 
     def __update_type(self):
-        if len(self.__lr) == 1:
-            self.__type = 0
-        else:
-            self.__type = len(self.__lr.shape)
+        self.__type = 0 if len(self.__lr) == 1 else 1
 
-    def at(self, i: int = None, j: int = None) -> float:
-        return {0: self.__lr[0], 1: self.__lr[i], 2: self.__lr[i, j]}[self.__type]
+    def at(self, i: int) -> float:
+        return self.__lr[0] if self.__type == 0 else self.__lr[i]
 
     def mean(self) -> float:
         return np.mean(self.__lr)
 
     def __mul__(self, rhs: np.ndarray):
-        if self.__type != 2:
-            return self.__lr * rhs
-        return self.__lr @ rhs
+        return self.__lr * rhs
 
     def __lt__(self, threshold: float) -> bool:
-        if isinstance(self.__lr[0], np.ndarray):
-            return np.all(np.diagonal(self.__lr) < threshold)
         return np.all(self.__lr < threshold)
 
     def __gt__(self, threshold: float) -> bool:
-        if isinstance(self.__lr[0], np.ndarray):
-            return np.all(np.diagonal(self.__lr) > threshold)
         return np.all(self.__lr > threshold)

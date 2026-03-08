@@ -31,6 +31,9 @@ class GLM(Model):
         except KeyError:
             raise ValueError(f"Unknown transfer '{transfer}'. Choose from: identity, exponential, inverse, logistic.")
 
+    def __repr__(self) -> str:
+        return f"GLM(family='{self._family}', transfer='{self._transfer}')"
+
     def _gradient_at_point(self, datum: DataPoint, theta_old: np.ndarray) -> np.ndarray:
         eta = datum._x @ theta_old
         mu = self._transfer_instance.h(eta)

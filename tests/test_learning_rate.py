@@ -18,14 +18,14 @@ class TestLRvalue:
         assert v.type == 1
         assert v.lr.shape == (4,)
 
-    def test_matrix_type(self):
-        v = LRvalue(2, 3)
-        assert v.type == 2
-        assert v.lr.shape == (3, 3)
-
     def test_invalid_type_raises(self):
         with pytest.raises(ValueError):
             LRvalue(5)
+
+    def test_matrix_type_raises(self):
+        # Matrix type (2) was removed; seq_type=2 is now invalid
+        with pytest.raises(ValueError):
+            LRvalue(2, 3)
 
     def test_setter_scalar(self):
         v = LRvalue(0, 1)
@@ -49,11 +49,6 @@ class TestLRvalue:
         v.lr = np.array([1.0, 2.0, 3.0])
         result = v * np.ones(3)
         assert np.allclose(result, [1.0, 2.0, 3.0])
-
-    def test_mul_matrix(self):
-        v = LRvalue(2, 2)
-        result = v * np.array([1.0, 2.0])
-        assert np.allclose(result, [1.0, 2.0])
 
     def test_lt(self):
         v = LRvalue(1, 3)
