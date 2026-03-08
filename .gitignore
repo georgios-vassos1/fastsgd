@@ -1,14 +1,15 @@
-.Rhistory
+# Python
+__pycache__/
+*.py[cod]
+
+# Jupyter
 .ipynb_checkpoints/
-.ropeproject/
+
+# Testing
 .pytest_cache/
+tests/pytest.log
 
-fastsgd.egg-info/
-
-tests/__pycache__/
-
-fastsgd/__pycache__/
-fastsgd/.ropeproject/
-fastsgd/__pycache__/
-fastsgd/learning_rate/__pycache__/
-fastsgd/obsolete_src.py
+# Build / packaging
+*.egg-info/
+dist/
+build/
