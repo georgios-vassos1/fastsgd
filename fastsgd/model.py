@@ -17,7 +17,7 @@ class Model(ABC):
 
     @abstractmethod
     def _gradient_at_point(self, datum: DataPoint, theta_old: np.ndarray) -> np.ndarray:
-        pass
+        pass  # pragma: no cover
 
     def gradient_penalty(self, theta: np.ndarray) -> np.ndarray:
         return self._lambda1 * np.sign(theta) + self._lambda2 * theta
@@ -26,7 +26,7 @@ class Model(ABC):
     ## ell'(x^T theta + at x^T grad(penalty) + ksi ||x||^2)
     @abstractmethod
     def scale_factor(self, ksi: float, at: float, datum: DataPoint, theta_old: np.ndarray, normx: float) -> float:
-        pass
+        pass  # pragma: no cover
 
     ## Covariance estimation
     @abstractmethod
@@ -38,7 +38,7 @@ class Model(ABC):
         penalties are excluded because covariance estimation targets the
         population-level estimating equations.
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def hessian_weights(self, data: DataSet, theta: np.ndarray) -> np.ndarray:
@@ -47,5 +47,5 @@ class Model(ABC):
         For a GLM this is h′(xᵢᵀθ); for an M-estimator it is ψ′(rᵢ).
         The expected Hessian is then A = (1/n) Xᵀ diag(w) X.
         """
-        pass
+        pass  # pragma: no cover
 

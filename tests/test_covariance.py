@@ -16,7 +16,6 @@ import pytest
 from fastsgd import GLM, MModel, DataSet
 from fastsgd.covariance import CovarianceEstimator, FisherCovariance, SandwichCovariance
 from fastsgd import ImplicitSGD, ExplicitSGD
-import time
 from tests.helpers import simulate_gaussian, fit_implicit
 
 
@@ -167,7 +166,7 @@ class TestMEstimatorCovariance:
         self.truth = truth
         self.m = MModel(loss='huber', threshold=3.0)
         # Huber with large l ≈ least squares; use ExplicitSGD (see note in test_integration)
-        sgd = ExplicitSGD(n, p, time,
+        sgd = ExplicitSGD(n, p,
                           lr='adagrad', lr_controls={'eta': 1.0, 'eps': 1e-6},
                           npasses=40, check=True, truth=truth, reltol=1e-3)
         theta = np.zeros(p)

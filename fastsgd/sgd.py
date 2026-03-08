@@ -1,4 +1,3 @@
-import time
 from abc import ABC, abstractmethod
 import numpy as np
 from .learning_rate import LRvalue, OnedimLR, OnedimEigLR, DDimLR
@@ -15,8 +14,6 @@ class SGD(ABC):
         Number of observations in the dataset.
     p : int
         Number of parameters.
-    timer : time module
-        Kept for API compatibility; not currently used internally.
 
     Keyword arguments
     -----------------
@@ -48,15 +45,13 @@ class SGD(ABC):
     truth : np.ndarray, optional
         True parameter vector used when ``check=True``.
     """
-    def __init__(self, n: int, p: int, timer: time, **kwargs):
-        self._name = kwargs.get("method", None)
+    def __init__(self, n: int, p: int, **kwargs):
         self._n_params = p
         self._reltol = kwargs.get("reltol", 1e-5)   # relative tolerance for convergence
         self._n_passes = kwargs.get("npasses", 10)  # number of passes over data
         self._size = kwargs.get("size", 10)          # number of estimates to be recorded (log-uniformly)
         self._estimates = np.zeros((self._n_params, self._size))
         self._last_estimate = np.zeros(self._n_params)
-        self._timer = timer
         self._t = 0
         self._n_recorded = 0              # number of coefs that have been recorded
         self._pos = np.zeros(self._size)  # the iteration of recorded coefs

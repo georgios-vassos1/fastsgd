@@ -1,8 +1,7 @@
 .PHONY: install build clear-cache test
 
 install:
-	uv venv
-	uv pip install -e ".[dev]"
+	uv sync --extra dev
 
 build:
 	uv build
@@ -14,4 +13,4 @@ clear-cache:
 	rm -rf .pytest_cache dist build *.egg-info
 
 test:
-	uv run pytest tests/ -q
+	uv run pytest tests/ -q --cov=fastsgd --cov-report=term-missing

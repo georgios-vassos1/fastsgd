@@ -17,19 +17,19 @@ class BaseLoss(ABC):
     """
     @abstractmethod
     def loss(self, u: float, threshold: float = 0.0) -> float:
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def first_deriv(self, u: float, threshold: float = 0.0) -> float:
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def second_deriv(self, u: float, threshold: float = 0.0) -> float:
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def third_deriv(self, u: float, threshold: float = 0.0) -> float:
-        pass
+        pass  # pragma: no cover
 
     def loss_vec(self, u: np.ndarray, threshold: float) -> np.ndarray:
         return np.where(np.abs(u) <= threshold, u ** 2 / 2, threshold * np.abs(u) - threshold ** 2 / 2)

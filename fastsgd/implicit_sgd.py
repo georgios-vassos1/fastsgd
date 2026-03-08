@@ -43,8 +43,8 @@ class ImplicitSGD(SGD):
     influence functions (e.g. Huber) the bracket may be invalid; use
     ExplicitSGD in that case.
     """
-    def __init__(self, n: int, p: int, timer, **details):
-        super().__init__(n, p, timer, method="Implicit SGD", **details)
+    def __init__(self, n: int, p: int, **kwargs):
+        super().__init__(n, p, **kwargs)
 
     def update(self, t: int, theta_old: np.ndarray, data: DataSet, model: Model, good_gradient: bool) -> np.ndarray:
         """Compute one implicit SGD step and return the updated parameter vector.

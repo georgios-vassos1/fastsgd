@@ -2,14 +2,13 @@
 End-to-end integration tests: verify that ImplicitSGD and ExplicitSGD converge
 to near-true parameters on simulated datasets for each supported model type.
 """
-import time
 import numpy as np
 import pytest
 from fastsgd import GLM, MModel, ImplicitSGD, ExplicitSGD, DataSet
 
 
 def run_implicit(D, model, n, p, truth, npasses=30, reltol=1e-3):
-    sgd = ImplicitSGD(n, p, time,
+    sgd = ImplicitSGD(n, p,
                       lr='adagrad', lr_controls={'eta': 1.0, 'eps': 1e-6},
                       npasses=npasses, check=True, truth=truth, reltol=reltol)
     theta = np.zeros(p)
@@ -22,7 +21,7 @@ def run_implicit(D, model, n, p, truth, npasses=30, reltol=1e-3):
 
 
 def run_explicit(D, model, n, p, truth, npasses=30, reltol=1e-3):
-    sgd = ExplicitSGD(n, p, time,
+    sgd = ExplicitSGD(n, p,
                       lr='adagrad', lr_controls={'eta': 1.0, 'eps': 1e-6},
                       npasses=npasses, check=True, truth=truth, reltol=reltol)
     theta = np.zeros(p)
@@ -123,7 +122,7 @@ class TestLearningRateVariants:
         kwargs = {"lr": lr, "npasses": 2}
         if controls:
             kwargs["lr_controls"] = controls
-        sgd = ImplicitSGD(self.n, self.p, time, **kwargs)
+        sgd = ImplicitSGD(self.n, self.p, **kwargs)
         theta = np.zeros(self.p)
         for t in range(1, self.n * 2 + 1):
             theta_new = sgd.update(t, theta, self.D, self.m, True)

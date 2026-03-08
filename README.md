@@ -45,11 +45,10 @@ m = GLM(family="gaussian", transfer="identity")
 ### 3. Fit with SGD
 
 ```python
-import time
 from fastsgd import ImplicitSGD
 
 n, p = D._n, D._p
-sgd = ImplicitSGD(n, p, time,
+sgd = ImplicitSGD(n, p,
                   lr="adagrad",
                   lr_controls={"eta": 1.0, "eps": 1e-6},
                   npasses=20,

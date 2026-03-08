@@ -7,8 +7,8 @@ __all__ = ['ExplicitSGD']
 
 
 class ExplicitSGD(SGD):
-    def __init__(self, n: int, p: int, timer, **kwargs):
-        super().__init__(n, p, timer, method="Explicit SGD", **kwargs)
+    def __init__(self, n: int, p: int, **kwargs):
+        super().__init__(n, p, **kwargs)
 
     def update(self, t: int, theta_old: np.ndarray, data: DataSet, model: Model, good_gradient: bool) -> np.ndarray:
         grad_t = model.gradient(t, theta_old, data)
