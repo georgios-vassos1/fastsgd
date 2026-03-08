@@ -1,7 +1,7 @@
 import numpy as np
 from .utils import DataPoint, DataSet
 from .model import *
-from .m_loss import HuberLoss
+from .loss import HuberLoss
 
 __all__ = ['MModel', 'm_model']
 

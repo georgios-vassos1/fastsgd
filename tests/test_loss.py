@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from fastsgd.m_loss import BaseLoss, HuberLoss
+from fastsgd.loss import BaseLoss, HuberLoss
 
 
 class TestBaseLossABC:
