@@ -5,21 +5,21 @@ from fastsgd.utils import DataPoint, DataSet
 
 
 class TestMModelConstruction:
-    def test_default_l(self):
+    def test_default_threshold(self):
         m = MModel()
-        assert m.l == 3.0
+        assert m.threshold == 3.0
 
-    def test_custom_l(self):
-        m = MModel(loss='huber', l=1.5)
-        assert m.l == 1.5
+    def test_custom_threshold(self):
+        m = MModel(loss='huber', threshold=1.5)
+        assert m.threshold == 1.5
 
     def test_invalid_loss_raises(self):
         with pytest.raises(ValueError, match="Unsupported loss"):
             MModel(loss='squared')
 
     def test_repr(self):
-        m = MModel(loss='huber', l=1.5)
-        assert repr(m) == "MModel(loss='huber', l=1.5)"
+        m = MModel(loss='huber', threshold=1.5)
+        assert repr(m) == "MModel(loss='huber', threshold=1.5)"
 
     def test_loss_property(self):
         m = MModel(loss='huber')
@@ -28,8 +28,8 @@ class TestMModelConstruction:
 
 class TestMModelGradient:
     def setup_method(self):
-        self.l = 3.0
-        self.m = MModel(loss='huber', l=self.l)
+        self.threshold = 3.0
+        self.m = MModel(loss='huber', threshold=self.threshold)
         self.x = np.array([1.0, 2.0])
         self.y = 1.0
         self.theta = np.zeros(2)
@@ -51,7 +51,7 @@ class TestMModelGradient:
 
     def test_gradient_huber_linear_branch(self):
         # Make residual >> l so we're in the linear branch
-        m = MModel(loss='huber', l=0.1)
+        m = MModel(loss='huber', threshold=0.1)
         theta = np.zeros(2)
         datum = DataPoint(np.array([1.0, 0.0]), 5.0, 0)
         # residual = 5.0 > l=0.1 → first_deriv = 0.1 * sign(5.0) = 0.1
@@ -61,7 +61,7 @@ class TestMModelGradient:
 
 class TestMModelScaleFactor:
     def setup_method(self):
-        self.m = MModel(loss='huber', l=3.0)
+        self.m = MModel(loss='huber', threshold=3.0)
         self.x = np.array([1.0, 2.0])
         self.y = 1.0
         self.theta = np.zeros(2)

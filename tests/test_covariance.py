@@ -165,7 +165,7 @@ class TestMEstimatorCovariance:
         Y = X @ truth + np.random.randn(n) * 0.3
         self.D = DataSet(X, Y)
         self.truth = truth
-        self.m = MModel(loss='huber', l=3.0)
+        self.m = MModel(loss='huber', threshold=3.0)
         # Huber with large l ≈ least squares; use ExplicitSGD (see note in test_integration)
         sgd = ExplicitSGD(n, p, time,
                           lr='adagrad', lr_controls={'eta': 1.0, 'eps': 1e-6},
@@ -223,13 +223,13 @@ class TestScoreAndHessianWeights:
 
     def test_mmodel_score_matrix_shape(self):
         D, _ = simulate_gaussian(50, 3)
-        m = MModel(loss='huber', l=3.0)
+        m = MModel(loss='huber', threshold=3.0)
         G = m.score_matrix(D, np.zeros(3))
         assert G.shape == (50, 3)
 
     def test_mmodel_hessian_weights_shape(self):
         D, _ = simulate_gaussian(50, 3)
-        m = MModel(loss='huber', l=3.0)
+        m = MModel(loss='huber', threshold=3.0)
         w = m.hessian_weights(D, np.zeros(3))
         assert w.shape == (50,)
 
@@ -238,7 +238,7 @@ class TestScoreAndHessianWeights:
         X = np.array([[1.0, 0.0], [1.0, 0.0]])
         Y = np.array([0.5, 100.0])   # first inside l=3, second outside
         D = DataSet(X, Y)
-        m = MModel(loss='huber', l=3.0)
+        m = MModel(loss='huber', threshold=3.0)
         w = m.hessian_weights(D, np.zeros(2))
         assert w[0] == pytest.approx(1.0)
         assert w[1] == pytest.approx(0.0)

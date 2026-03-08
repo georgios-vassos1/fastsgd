@@ -39,7 +39,7 @@ from fastsgd import GLM, MModel
 m = GLM(family="gaussian", transfer="identity")
 
 # Robust M-estimator with Huber loss (use ExplicitSGD for M-estimators)
-# m = MModel(loss="huber", l=1.5)
+# m = MModel(loss="huber", threshold=1.5)
 ```
 
 ### 3. Fit with SGD

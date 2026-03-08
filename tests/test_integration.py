@@ -94,7 +94,7 @@ class TestMEstimationHuber:
     def test_explicit_sgd_huber_converges(self):
         # ImplicitSGD's brentq bracket is only guaranteed for GLMs;
         # ExplicitSGD is the correct choice for M-estimators.
-        m = MModel(loss='huber', l=3.0)
+        m = MModel(loss='huber', threshold=3.0)
         theta = run_explicit(self.D, m, self.n, self.p, self.truth, npasses=40)
         assert np.mean((theta - self.truth) ** 2) < 0.2
 

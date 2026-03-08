@@ -1,7 +1,7 @@
 import time
 from abc import ABC, abstractmethod
 import numpy as np
-from .learning_rate import *
+from .learning_rate import LRvalue, OnedimLR, OnedimEigLR, DDimLR
 
 __all__ = ['SGD']
 
