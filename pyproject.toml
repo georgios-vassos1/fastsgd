@@ -7,7 +7,7 @@ name = "fastsgd"
 version = "0.0.1"
 description = "A fast python library for Stochastic Gradient Descent"
 readme = "README.md"
-license = { text = "MIT" }
+license = { file = "LICENSE" }
 authors = [
     { name = "George Vassos", email = "georgios.vassos1@maersk.com" }
 ]
@@ -17,7 +17,7 @@ classifiers = [
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Mathematics",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",

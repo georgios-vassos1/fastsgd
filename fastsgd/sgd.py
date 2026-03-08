@@ -116,7 +116,10 @@ class SGD(ABC):
             if np.mean((theta_new - self._truth) ** 2) < self._reltol:
                 return True
         else:
-            if np.mean(np.abs(theta_new - theta_old)) / np.mean(np.abs(theta_old)) < self._reltol:
+            denom = np.mean(np.abs(theta_old))
+            if denom == 0.0:
+                return False
+            if np.mean(np.abs(theta_new - theta_old)) / denom < self._reltol:
                 return True
         return False
 
