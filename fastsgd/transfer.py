@@ -16,17 +16,17 @@ class Transfer(ABC):
     @abstractmethod
     def h(self, eta: np.ndarray) -> np.ndarray:
         """Apply the transfer function: mu = h(eta)."""
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def first_deriv(self, eta: np.ndarray) -> np.ndarray:
         """First derivative h'(eta)."""
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def second_deriv(self, eta: np.ndarray) -> np.ndarray:
         """Second derivative h''(eta)."""
-        pass
+        pass  # pragma: no cover
 
     def h_vec(self, u: np.ndarray) -> np.ndarray:
         return self.h(u)
