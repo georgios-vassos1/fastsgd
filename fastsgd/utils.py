@@ -1,10 +1,10 @@
 import numpy as np
-# import math
 
-# sign = np.vectorize(lambda x: math.copysign(1, x))
+__all__ = ['DataLoader', 'DataPoint', 'DataSet', 'data_point', 'data_set']
+
 
 class DataLoader:
-    def __init__(self, dbcon = None, data_path = None, data_uri = None):
+    def __init__(self, dbcon=None, data_path=None, data_uri=None):
         self._dbcon = dbcon
         self._data_path = data_path
         self._data_uri = data_uri
@@ -19,18 +19,20 @@ class DataLoader:
         pass
 
 
-class data_point:
+class DataPoint:
     def __init__(self, x: np.ndarray, y: float, i: int):
         self._x, self._y, self._i = x, y, i
 
 
-class data_set:
+class DataSet:
     def __init__(self, X: np.ndarray, Y: np.ndarray):
         self._X, self._Y, self._n, self._p = X, Y, X.shape[0], X.shape[1]
 
-    ## Replace this with a dunder call
-    def get_data_point(self, t: int) -> data_point:
-        t = (t-1) % self._n
-        return data_point(self._X[t], self._Y[t], t)
+    def get_data_point(self, t: int) -> DataPoint:
+        t = (t - 1) % self._n
+        return DataPoint(self._X[t], self._Y[t], t)
 
 
+# Backward-compatible aliases
+data_point = DataPoint
+data_set = DataSet
