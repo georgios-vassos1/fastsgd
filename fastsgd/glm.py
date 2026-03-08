@@ -32,21 +32,33 @@ class GLM(Model):
             raise ValueError(f"Unknown transfer '{transfer}'. Choose from: identity, exponential, inverse, logistic.")
 
     def _gradient_at_point(self, datum: DataPoint, theta_old: np.ndarray) -> np.ndarray:
-        return ((datum._y - self._transfer_instance.h(datum._x @ theta_old)) * datum._x) - self.gradient_penalty(theta_old)
+        eta = datum._x @ theta_old
+        mu = self._transfer_instance.h(eta)
+        h_prime = self._transfer_instance.first_deriv(eta)
+        v_mu = self._family_instance.variance(mu)
+        return (datum._y - mu) / v_mu * h_prime * datum._x - self.gradient_penalty(theta_old)
 
     def scale_factor(self, ksi: float, at: float, datum: DataPoint, theta_old: np.ndarray, normx: float) -> float:
+        # Fixed-point equation for the quasi-likelihood estimating equations
+        # (y - h(eta)) * x = 0.  Valid for canonical links; for non-canonical
+        # links the proper MLE scale_factor would also include V(mu) and h'(eta).
         return datum._y - self._transfer_instance.h(
             (theta_old @ datum._x) - at * (self.gradient_penalty(theta_old) @ datum._x) + ksi * normx
         )
 
     def score_matrix(self, data: DataSet, theta: np.ndarray) -> np.ndarray:
         eta = data._X @ theta
-        resid = data._Y - self._transfer_instance.h_vec(eta)
-        return resid[:, None] * data._X
+        mu = self._transfer_instance.h_vec(eta)
+        h_prime = np.asarray(self._transfer_instance.first_deriv_vec(eta), dtype=float).ravel()
+        v_mu = np.asarray(self._family_instance.variance(mu), dtype=float).ravel()
+        return ((data._Y - mu) / v_mu * h_prime)[:, None] * data._X
 
     def hessian_weights(self, data: DataSet, theta: np.ndarray) -> np.ndarray:
         eta = data._X @ theta
-        return np.asarray(self._transfer_instance.first_deriv_vec(eta), dtype=float).ravel()
+        mu = self._transfer_instance.h_vec(eta)
+        h_prime = np.asarray(self._transfer_instance.first_deriv_vec(eta), dtype=float).ravel()
+        v_mu = np.asarray(self._family_instance.variance(mu), dtype=float).ravel()
+        return h_prime ** 2 / v_mu
 
 
 # Backward-compatible alias

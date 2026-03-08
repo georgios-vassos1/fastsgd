@@ -1,11 +1,12 @@
 import time
+from abc import ABC, abstractmethod
 import numpy as np
 from .learning_rate import *
 
 __all__ = ['SGD']
 
 
-class SGD:
+class SGD(ABC):
     """Base class for SGD optimisers. Use ImplicitSGD or ExplicitSGD directly.
 
     Parameters
@@ -85,11 +86,16 @@ class SGD:
         elif self._lr_choice == "rmsprop":
             self._lr_obj = DDimLR(self._n_params, controls["eta"], controls["gamma"], 1.0 - controls["gamma"], 0.5, controls["eps"])
 
+    @abstractmethod
+    def update(self, t: int, theta_old: np.ndarray, data, model, good_gradient: bool) -> np.ndarray:
+        """Compute one SGD step and return the updated parameter vector."""
+        pass
+
     def get_value_of(self, attribute: str):
         try:
             return self.__dict__["_" + attribute]
         except KeyError:
-            print(attribute + " is not an attribute of the caller.")
+            raise AttributeError(f"'{type(self).__name__}' has no attribute '{attribute}'")
 
     def convergence(self, theta_new: np.ndarray, theta_old: np.ndarray) -> bool:
         """Return True if the stopping criterion is satisfied.
@@ -120,8 +126,20 @@ class SGD:
                 self._estimates[:, self._n_recorded] = theta_new
                 self._n_recorded += 1
 
-    def early_stop(self):
-        pass
+    def averaged_estimate(self) -> np.ndarray:
+        """Return the Polyak-Ruppert average of stored parameter snapshots.
+
+        Averages the log-uniformly spaced snapshots recorded by
+        ``sync_members``. This can have lower asymptotic variance than the
+        final iterate when using a non-optimal (e.g. polynomial-decay) learning
+        rate. See Polyak & Juditsky (1992).
+
+        Returns ``_last_estimate`` (the most recent iterate) if no snapshots
+        have been recorded yet.
+        """
+        if self._n_recorded == 0:
+            return self._last_estimate.copy()
+        return self._estimates[:, :self._n_recorded].mean(axis=1)
 
     def _learning_rate(self, t: int, grad_t: np.ndarray) -> LRvalue:
         return self._lr_obj(t, grad_t)

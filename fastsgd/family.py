@@ -31,7 +31,7 @@ class Family(ABC):
 
 class Gaussian(Family):
     def __init__(self):
-        self.variance = lambda x: 1.0
+        self.variance = lambda x: np.ones_like(np.asarray(x, dtype=float))
 
     def deviance(self, y, mu, wt):
         return np.sum(wt * ((y - mu) ** 2))

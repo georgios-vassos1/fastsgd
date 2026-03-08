@@ -27,9 +27,10 @@ class TestSGDInit:
         sgd = ExplicitSGD(100, 3, time, npasses=7)
         assert sgd.get_value_of("n_passes") == 7
 
-    def test_get_value_of_unknown_does_not_raise(self):
+    def test_get_value_of_unknown_raises(self):
         sgd = ExplicitSGD(100, 3, time)
-        sgd.get_value_of("nonexistent")  # should print, not raise
+        with pytest.raises(AttributeError):
+            sgd.get_value_of("nonexistent")
 
     def test_all_lr_choices_initialise(self):
         n, p = 100, 3
@@ -88,6 +89,37 @@ class TestSyncMembers:
         theta = np.array([1.5, 2.5])
         sgd.sync_members(theta)
         assert np.allclose(sgd._last_estimate, theta)
+
+
+class TestAveragedEstimate:
+    def test_returns_last_estimate_before_any_snapshot(self):
+        sgd = ExplicitSGD(100, 3, time, npasses=10, size=5)
+        result = sgd.averaged_estimate()
+        assert result.shape == (3,)
+        assert np.allclose(result, np.zeros(3))
+
+    def test_shape_after_snapshots(self):
+        D, truth = make_gaussian_problem(n=100, p=3)
+        m = GLM(family='gaussian', transfer='identity')
+        sgd = ExplicitSGD(100, 3, time, lr='adagrad', lr_controls={'eta': 1.0, 'eps': 1e-6},
+                          npasses=5)
+        theta = np.zeros(3)
+        for t in range(1, 100 * 5 + 1):
+            theta = sgd.update(t, theta, D, m, True)
+            sgd.sync_members(theta)
+        result = sgd.averaged_estimate()
+        assert result.shape == (3,)
+
+    def test_average_is_finite(self):
+        D, truth = make_gaussian_problem(n=100, p=3)
+        m = GLM(family='gaussian', transfer='identity')
+        sgd = ExplicitSGD(100, 3, time, lr='adagrad', lr_controls={'eta': 1.0, 'eps': 1e-6},
+                          npasses=5)
+        theta = np.zeros(3)
+        for t in range(1, 100 * 5 + 1):
+            theta = sgd.update(t, theta, D, m, True)
+            sgd.sync_members(theta)
+        assert np.all(np.isfinite(sgd.averaged_estimate()))
 
 
 class TestGoodGradient:

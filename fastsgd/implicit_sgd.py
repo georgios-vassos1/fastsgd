@@ -66,7 +66,15 @@ class ImplicitSGD(SGD):
         lower, upper = (r, 0) if r < 0 else (0, r)
 
         if lower != upper:
-            ksi = brentq(ImplicitFn(model, at, datum, theta_old, normx), lower, upper, maxiter=100)
+            try:
+                ksi = brentq(ImplicitFn(model, at, datum, theta_old, normx), lower, upper, maxiter=100)
+            except ValueError as exc:
+                raise ValueError(
+                    f"ImplicitSGD: brentq could not bracket a root at iteration {t} "
+                    f"(bracket=[{lower:.4g}, {upper:.4g}]). "
+                    "This typically occurs for M-estimators with saturating influence "
+                    "functions (e.g. Huber loss). Use ExplicitSGD for such models."
+                ) from exc
         else:
             ksi = lower
 
