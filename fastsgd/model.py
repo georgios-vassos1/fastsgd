@@ -36,6 +36,27 @@ class Model(ABC):
     def scale_factor_second_deriv(self, ksi: float, at: float, datum: DataPoint, theta_old: np.ndarray, normx: float) -> float:
         pass
 
+    ## Covariance estimation
+    @abstractmethod
+    def score_matrix(self, data: DataSet, theta: np.ndarray) -> np.ndarray:
+        """Return the (n, p) matrix of per-observation score contributions.
+
+        The score for observation i is the unpenalised gradient contribution:
+        the influence function evaluated at (xᵢ, yᵢ, θ). Regularisation
+        penalties are excluded because covariance estimation targets the
+        population-level estimating equations.
+        """
+        pass
+
+    @abstractmethod
+    def hessian_weights(self, data: DataSet, theta: np.ndarray) -> np.ndarray:
+        """Return the (n,) array of per-observation Hessian weights.
+
+        For a GLM this is h′(xᵢᵀθ); for an M-estimator it is ψ′(rᵢ).
+        The expected Hessian is then A = (1/n) Xᵀ diag(w) X.
+        """
+        pass
+
 
 # Backward-compatible alias
 model = Model

@@ -30,6 +30,15 @@ class MModel(Model):
             - self.gradient_penalty(theta_old)
         )
 
+    def score_matrix(self, data: DataSet, theta: np.ndarray) -> np.ndarray:
+        resid = data._Y - data._X @ theta
+        psi = self._lossobj.first_deriv_vec(resid, self._l)
+        return psi[:, None] * data._X
+
+    def hessian_weights(self, data: DataSet, theta: np.ndarray) -> np.ndarray:
+        resid = data._Y - data._X @ theta
+        return self._lossobj.second_deriv_vec(resid, self._l)
+
     def scale_factor(self, ksi: float, at: float, datum: DataPoint, theta_old: np.ndarray, normx: float) -> float:
         return self._lossobj.first_deriv(
             datum._y - (datum._x @ theta_old) - at * (self.gradient_penalty(theta_old) @ datum._x) + ksi * normx,
