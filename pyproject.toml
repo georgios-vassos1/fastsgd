@@ -9,7 +9,7 @@ description = "A fast python library for Stochastic Gradient Descent"
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [
-    { name = "George Vassos", email = "georgios.vassos1@maersk.com" }
+    { name = "George Vassos" }
 ]
 requires-python = ">=3.9"
 classifiers = [
